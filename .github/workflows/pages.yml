@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    # Make sure Actions can read the repo and write Pages configuration
     permissions:
       contents: read
       pages: write
@@ -18,10 +20,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configure GitHub Pages
+        # configure-pages@v3 can enable Pages for the repo when needed
         uses: actions/configure-pages@v3
+        with:
+          # Attempt to enable Pages if not already enabled
+          enablement: 'true'
 
       - name: Upload artifact
-        # Use v3 which avoids the deprecated upload-artifact v3 dependency
+        # Use v3 (does NOT depend on the deprecated actions/upload-artifact@v3)
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./
